@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Virtualenvs
+.venv/
+venv/
+
+# Node / Vite
+node_modules/
+packages/gpu-dashboard/static/dist/
+packages/gpu-dashboard/frontend/dist/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Local config / audit
+*.local.json
+journal.jsonl
+.gpu-watch/
+
+# Secrets
+*.pem
+id_rsa
+id_ed25519

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpuwatchlib"
+version = "0.1.0"
+description = "GPU health SDK: SSH-driven nvidia-smi probes + dcgm-exporter /metrics HTTP client + classifier mapping signals to the watchdog's drain categories."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "01p5" }]
+dependencies = [
+    "paramiko>=3.4,<4",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

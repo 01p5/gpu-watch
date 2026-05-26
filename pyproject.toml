@@ -1,0 +1,26 @@
+# Repo-level config. Per-package pyprojects live under packages/.
+
+[tool.pytest.ini_options]
+testpaths = [
+    "packages/gpuwatchlib/tests",
+    "packages/gpu-dashboard/tests",
+    "packages/gpu-mcp/tests",
+]
+addopts = "-q"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+branch = false
+source = ["gpuwatchlib", "gpu_dashboard", "gpu_mcp"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]
+fail_under = 80
+show_missing = true
