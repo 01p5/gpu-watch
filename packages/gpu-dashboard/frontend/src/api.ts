@@ -2,13 +2,18 @@
 
 export type ApiError = { error: string; [k: string]: unknown };
 
+// S2.B2 — sub-path-aware API base. See slurm-mgr commit 4c81a32 for
+// the full reasoning; this is the gpu-watch mirror.
+const API_BASE = (import.meta.env.BASE_URL ?? "/").replace(/\/$/, "");
+
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
   const init: RequestInit = {
     method,
     headers: { "Content-Type": "application/json" },
   };
   if (body !== undefined) init.body = JSON.stringify(body);
-  const res = await fetch(path, init);
+  const url = path.startsWith("/") ? `${API_BASE}${path}` : path;
+  const res = await fetch(url, init);
   const text = await res.text();
   let data: unknown = null;
   if (text) {
