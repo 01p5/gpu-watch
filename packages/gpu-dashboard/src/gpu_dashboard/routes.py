@@ -12,6 +12,8 @@ from typing import Any, Callable
 from gpuwatchlib import (
     DcgmExporterClient, JsonlAuditLogger, Node, NodeRegistry, NullAuditLogger,
 )
+from gpu_mcp.server import dispatch as _mcp_dispatch
+from gpu_mcp.tools import set_registry as _mcp_set_registry
 
 from .service import NodeService
 
@@ -66,6 +68,15 @@ def route(method: str, path: str, query: dict[str, str],
 
     if method == "GET" and path == "/audit":
         return _audit_tail(deps)
+
+    # ---- MCP-over-HTTP (S2.B1) ----
+    # POST /mcp — JSON-RPC 2.0 envelope on the body, single response
+    # on the body (no SSE). The gpu-mcp tools resolve nodes via a
+    # module-level registry; we point it at the dashboard's own
+    # registry before each dispatch so additions/deletions made via
+    # the dashboard show up in MCP tool output immediately.
+    if method == "POST" and path == "/mcp":
+        return _mcp_handler(body, deps)
 
     # ---- Node registry ----
     if method == "GET" and path == "/nodes":
@@ -134,6 +145,27 @@ def route_with_fleet(method: str, path: str, query: dict[str, str],
     if method == "GET" and path == "/fleet/unhealthy":
         return _fleet_unhealthy(query, deps)
     return route(method, path, query, body, deps)
+
+
+def _mcp_handler(body: dict | None, deps: Deps) -> tuple[int, dict, bytes]:
+    """JSON-RPC 2.0 over HTTP for the gpu-mcp tool catalog.
+
+    Body must be a single JSON-RPC envelope. We dispatch via
+    gpu_mcp.server.dispatch (the same function the stdio loop drives)
+    so stdio + HTTP transports stay in lock-step. The gpu-mcp tools
+    look up nodes through a module-level registry — we bind ours
+    before each dispatch so the MCP view of the fleet is always the
+    dashboard's view.
+
+    Notifications (no id field) return 204 with empty body.
+    """
+    if not isinstance(body, dict):
+        return _err(400, "expected JSON-RPC envelope body")
+    _mcp_set_registry(deps.registry)
+    response = _mcp_dispatch(body)
+    if response is None:
+        return 204, {}, b""
+    return _json(200, response)
 
 
 def _fleet_summary(query: dict, deps: Deps) -> tuple[int, dict, bytes]:

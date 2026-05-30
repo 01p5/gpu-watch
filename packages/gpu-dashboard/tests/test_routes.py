@@ -306,3 +306,61 @@ def test_base_route_does_not_handle_fleet():
                 dcgm_factory=lambda u: None, audit=NullAuditLogger())
     status, _, _ = route("GET", "/fleet/summary", {}, None, deps)
     assert status == 404
+
+
+# ----------------------------------------------------------------------
+# S2.B1 — MCP-over-HTTP route. Mirrors gpu-mcp's stdio dispatch
+# exactly; we just exercise the HTTP wrapping here.
+# ----------------------------------------------------------------------
+
+
+def test_mcp_initialize(make_deps):
+    deps = make_deps()
+    status, body = _call("POST", "/mcp", deps, body={
+        "jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {},
+    })
+    assert status == 200
+    assert body["result"]["protocolVersion"] == "2024-11-05"
+    assert body["result"]["serverInfo"]["name"] == "gpu-mcp"
+
+
+def test_mcp_tools_list_returns_full_catalog(make_deps):
+    deps = make_deps()
+    status, body = _call("POST", "/mcp", deps, body={
+        "jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {},
+    })
+    assert status == 200
+    names = {t["name"] for t in body["result"]["tools"]}
+    assert {"nodes_list", "fleet_summary", "drain_advisor",
+            "node_status", "node_ecc"} <= names
+
+
+def test_mcp_nodes_list_uses_dashboard_registry(make_deps):
+    """The dashboard binds its own NodeRegistry to gpu-mcp's
+    module-level registry before each dispatch. So a node registered
+    via the dashboard's /nodes POST is visible to MCP tools too."""
+    deps = make_deps()  # registers "g1" by default in the fixture
+    status, body = _call("POST", "/mcp", deps, body={
+        "jsonrpc": "2.0", "id": 3, "method": "tools/call",
+        "params": {"name": "nodes_list", "arguments": {}},
+    })
+    assert status == 200
+    text = body["result"]["content"][0]["text"]
+    assert "g1" in text
+
+
+def test_mcp_notification_returns_204(make_deps):
+    deps = make_deps()
+    status, _ = _call("POST", "/mcp", deps, body={
+        "jsonrpc": "2.0", "method": "notifications/initialized",
+        # id absent — notification, no response.
+    })
+    assert status == 204
+
+
+def test_mcp_non_dict_body_400(make_deps):
+    from gpu_dashboard.routes import _mcp_handler
+    deps = make_deps()
+    status, _, payload = _mcp_handler(["not", "a", "dict"], deps)  # type: ignore[arg-type]
+    assert status == 400
+    assert b"JSON-RPC envelope" in payload

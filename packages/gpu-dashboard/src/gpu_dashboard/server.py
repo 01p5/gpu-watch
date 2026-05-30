@@ -25,7 +25,7 @@ DEFAULT_STATIC_DIR = Path(__file__).resolve().parent.parent.parent / "static" / 
 
 # Paths the server treats as API. A 404 from one of these never falls
 # through to the SPA — the structured JSON error reaches the client.
-API_PREFIXES = ("/nodes", "/fleet", "/healthz", "/audit")
+API_PREFIXES = ("/nodes", "/fleet", "/healthz", "/audit", "/mcp")
 
 
 def _is_api_path(path: str) -> bool:

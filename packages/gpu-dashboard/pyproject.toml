@@ -10,7 +10,13 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "01p5" }]
-dependencies = ["gpuwatchlib"]
+dependencies = [
+    "gpuwatchlib",
+    # S2.B1 — the dashboard also exposes the MCP catalog over HTTP
+    # at POST /mcp. Reuses gpu_mcp.server.dispatch so stdio + HTTP
+    # stay in lock-step.
+    "gpu-mcp",
+]
 
 [project.optional-dependencies]
 test = ["pytest>=8"]
