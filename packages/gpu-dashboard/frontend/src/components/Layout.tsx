@@ -32,8 +32,11 @@ export function Layout() {
               <NavLink key={to} to={to}
                 className={({ isActive }) => clsx(
                   "flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm text-xs whitespace-nowrap transition-colors border border-transparent",
-                  isActive ? "bg-dark-panel text-text-primary border-border-subtle"
-                           : "text-text-secondary hover:text-text-primary",
+                  // Accent-tinted active + hover so the gpu-watch nav
+                  // reads as teal — was generic dark-panel before,
+                  // indistinguishable from the Olympus shell colors.
+                  isActive ? "bg-accent-teal/10 text-accent-teal border-accent-teal/40"
+                           : "text-text-secondary hover:text-accent-teal hover:bg-accent-teal/[0.06]",
                 )}
               >
                 <Icon size={16} strokeWidth={2.5} />{label}
