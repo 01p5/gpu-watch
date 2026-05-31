@@ -78,7 +78,7 @@ export function NodePage() {
         <h2 className="text-sm text-text-secondary font-mono">
           {active ? <>node <span className="text-accent-teal">{active}</span> · GPU count <span className="text-text-primary">{data?.gpu_count ?? "—"}</span></> : "no node selected"}
         </h2>
-        <Button size="sm" variant="ghost" icon={<RefreshCw size={12} />} onClick={reload} loading={loading}>reload</Button>
+        <Button size="sm" variant="ghost" icon={<RefreshCw size={14} strokeWidth={2.25} />} onClick={reload} loading={loading}>reload</Button>
       </div>
 
       <Card title="GPUs" className="h-full">

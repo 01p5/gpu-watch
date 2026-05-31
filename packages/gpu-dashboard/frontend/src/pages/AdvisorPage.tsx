@@ -46,7 +46,7 @@ export function AdvisorPage() {
           ↳ enables the GPU_COUNT rule when a node sees fewer GPUs than this
         </span>
         <div className="flex-1" />
-        <Button size="sm" variant="ghost" icon={<RefreshCw size={12} />} onClick={reload} loading={loading}>re-classify</Button>
+        <Button size="sm" variant="ghost" icon={<RefreshCw size={14} strokeWidth={2.25} />} onClick={reload} loading={loading}>re-classify</Button>
       </div>
 
       <Card title="Nodes with HARD findings" className="h-full">

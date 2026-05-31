@@ -20,7 +20,7 @@ export function HostsPage() {
     {
       key: "act", header: "", align: "right",
       cell: (n) => (
-        <Button size="sm" variant="ghost" icon={<Trash2 size={12} />} onClick={() => setDeleting(n.name)}>remove</Button>
+        <Button size="sm" variant="ghost" icon={<Trash2 size={14} strokeWidth={2.25} />} onClick={() => setDeleting(n.name)}>remove</Button>
       ),
     },
   ];
@@ -32,8 +32,8 @@ export function HostsPage() {
         className="h-full"
         actions={
           <>
-            <Button size="sm" variant="ghost" icon={<RefreshCw size={12} />} onClick={reload} loading={loading}>reload</Button>
-            <Button size="sm" variant="primary" icon={<Plus size={12} />} onClick={() => setAdding(true)}>add node</Button>
+            <Button size="sm" variant="ghost" icon={<RefreshCw size={14} strokeWidth={2.25} />} onClick={reload} loading={loading}>reload</Button>
+            <Button size="sm" variant="primary" icon={<Plus size={14} strokeWidth={2.25} />} onClick={() => setAdding(true)}>add node</Button>
           </>
         }
       >

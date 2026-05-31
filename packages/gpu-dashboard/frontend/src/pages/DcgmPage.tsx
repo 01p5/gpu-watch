@@ -19,7 +19,7 @@ export function DcgmPage() {
       <Card
         title={`dcgm-exporter — ${active ?? "no node"}`}
         className="h-full"
-        actions={<Button size="sm" variant="ghost" icon={<RefreshCw size={12} />} onClick={reload} loading={loading}>reload</Button>}
+        actions={<Button size="sm" variant="ghost" icon={<RefreshCw size={14} strokeWidth={2.25} />} onClick={reload} loading={loading}>reload</Button>}
       >
         {!active && <EmptyState message="Pick a node from the topbar." />}
         {error && <ErrorBox message={error} />}

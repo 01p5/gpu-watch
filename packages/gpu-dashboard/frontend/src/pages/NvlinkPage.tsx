@@ -21,7 +21,7 @@ export function NvlinkPage() {
         <h2 className="text-sm text-text-secondary font-mono">
           {active ? `NVLink on ${active}` : "no node selected"}
         </h2>
-        <Button size="sm" variant="ghost" icon={<RefreshCw size={12} />} onClick={reload} loading={loading}>reload</Button>
+        <Button size="sm" variant="ghost" icon={<RefreshCw size={14} strokeWidth={2.25} />} onClick={reload} loading={loading}>reload</Button>
       </div>
 
       {data?.nvlink_check && (

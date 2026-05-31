@@ -66,7 +66,7 @@ export function FleetPage() {
       <Card
         title="Fleet — at-a-glance health"
         className="h-full"
-        actions={<Button size="sm" variant="ghost" icon={<RefreshCw size={12} />} onClick={reload} loading={loading}>reload</Button>}
+        actions={<Button size="sm" variant="ghost" icon={<RefreshCw size={14} strokeWidth={2.25} />} onClick={reload} loading={loading}>reload</Button>}
       >
         {error && <ErrorBox message={error} />}
         {!error && rows.length === 0 && !loading && (
