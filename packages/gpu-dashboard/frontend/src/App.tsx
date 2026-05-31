@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Layout } from "./components/Layout";
+import { EmbedNavSync } from "./components/EmbedNavSync";
 import { NodeProvider } from "./NodeContext";
 import { HostsPage } from "./pages/HostsPage";
 import { FleetPage } from "./pages/FleetPage";
@@ -13,6 +14,7 @@ import { AdvisorPage } from "./pages/AdvisorPage";
 export default function App() {
   return (
     <NodeProvider>
+      <EmbedNavSync />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/fleet" replace />} />
