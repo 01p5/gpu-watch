@@ -36,7 +36,7 @@ export function Layout() {
                            : "text-text-secondary hover:text-text-primary",
                 )}
               >
-                <Icon size={14} strokeWidth={2.25} />{label}
+                <Icon size={16} strokeWidth={2.5} />{label}
               </NavLink>
             ))}
           </nav>
