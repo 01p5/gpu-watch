@@ -57,7 +57,7 @@ export function AdvisorPage() {
         {rows.map((row, i) => (
           <div key={i} className="border-b border-border-subtle px-3 py-2">
             <div className="flex items-center gap-2 mb-1.5">
-              <AlertTriangle size={14} className="text-accent-orange" />
+              <AlertTriangle size={14} strokeWidth={2.25} className="text-accent-orange" />
               <span className="font-mono text-sm text-accent-teal">{row.node}</span>
               {"error" in row && <span className="text-accent-red font-mono text-xs">{row.error}</span>}
             </div>
